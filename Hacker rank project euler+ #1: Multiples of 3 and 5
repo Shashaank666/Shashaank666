@@ -1,0 +1,25 @@
+#!/bin/python3
+
+import sys
+
+def sum_of_multiples(n):
+    n -= 1  # Since we need multiples below N, reduce N by 1
+    sum_multiples = 0
+
+    # Calculate the sum of multiples of 3
+    sum_multiples += 3 * (n // 3 * (n // 3 + 1)) // 2
+
+    # Calculate the sum of multiples of 5
+    sum_multiples += 5 * (n // 5 * (n // 5 + 1)) // 2
+
+    # Subtract the sum of multiples of 15 to avoid double counting
+    sum_multiples -= 15 * (n // 15 * (n // 15 + 1)) // 2
+
+    return sum_multiples
+
+
+t = int(input().strip())
+for a0 in range(t):
+    n = int(input().strip())
+    result = sum_of_multiples(n)
+    print(result)
