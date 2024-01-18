@@ -1,0 +1,22 @@
+#!/bin/python3
+
+import sys
+
+import math
+
+def lcm(a, b):
+    return a * b // math.gcd(a, b)
+
+def smallest_multiple(n):
+    result = 1
+    for i in range(2, n + 1):
+        result = lcm(result, i)
+    return result
+
+
+
+t = int(input().strip())
+for a0 in range(t):
+    n = int(input().strip())
+    result = smallest_multiple(n)
+    print(result)
