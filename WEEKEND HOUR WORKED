@@ -1,0 +1,28 @@
+/*
+Enter your query below.
+Please append a semicolon ";" at the end of the query
+*/
+WITH hours_worked AS (
+    SELECT
+        emp_id,
+        CASE 
+            WHEN MINUTE(TIMESTAMP) >= MINUTE(LAG(TIMESTAMP) OVER (PARTITION BY CAST(TIMESTAMP AS DATE), emp_id ORDER BY TIMESTAMP))
+                THEN HOUR(TIMESTAMP) - HOUR(LAG(TIMESTAMP) OVER (PARTITION BY CAST(TIMESTAMP AS DATE), emp_id ORDER BY TIMESTAMP)) 
+            ELSE HOUR(TIMESTAMP) - HOUR(LAG(TIMESTAMP) OVER (PARTITION BY CAST(TIMESTAMP AS DATE), emp_id ORDER BY TIMESTAMP)) - 1
+        END AS hours_worked
+    FROM   
+        attendance
+    -- only weekends (Saturday and Sunday)
+    WHERE  
+        DAYOFWEEK(TIMESTAMP) IN (7, 1)
+)
+SELECT
+    emp_id,
+    SUM(CASE WHEN hours_worked > 0 THEN hours_worked ELSE 0 END) AS work_hours
+FROM  
+    hours_worked
+GROUP BY 
+    emp_id
+ORDER BY 
+    work_hours DESC;
+
