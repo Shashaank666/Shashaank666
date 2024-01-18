@@ -1,0 +1,29 @@
+#!/bin/python3
+
+import sys
+import math
+
+def largest_prime_factor(n):
+    # Divide by 2 until it is an odd number
+    while n % 2 == 0:
+        n //= 2
+
+    # Check for odd prime factors
+    max_prime = 2
+    for i in range(3, int(math.sqrt(n)) + 1, 2):
+        while n % i == 0:
+            max_prime = i
+            n //= i
+
+    # If the remaining number is a prime greater than 2
+    if n > 2:
+        max_prime = n
+
+    return max_prime
+
+
+t = int(input().strip())
+for a0 in range(t):
+    n = int(input().strip())
+    result = largest_prime_factor(n)
+    print(result)
