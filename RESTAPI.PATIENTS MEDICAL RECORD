@@ -1,0 +1,97 @@
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+
+class Result
+{
+
+    /*
+     * Complete the 'getAverageTemperatureForUser' function below.
+     *
+     * URL for cut and paste
+     * https://jsonmock.hackerrank.com/api/medical_records?userId=<userId>&page=<page>
+     *
+     * The function is expected to return a String value.
+     * The function accepts a userId argumnent (Integer).
+     * 
+     * In the case of an empty array result, return value '0'
+     */
+    
+    public static string getAverageTemperatureForUser(int userId)
+    {
+        string baseUrl = "https://jsonmock.hackerrank.com/api/medical_records";
+        int page = 1;
+        double totalTemperature = 0;
+        int totalRecords = 0;
+
+        while (true)
+        {
+            string url = $"{baseUrl}?userId={userId}&page={page}";
+            string jsonResponse = MakeRequest(url).Result;
+            dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonResponse);
+
+            if (data.data.Count == 0)
+                break;
+
+            foreach (var record in data.data)
+            {
+                if (record.vitals != null && record.vitals.bodyTemperature != null)
+                {
+                    double temperature = Convert.ToDouble(record.vitals.bodyTemperature);
+                    totalTemperature += temperature;
+                    totalRecords++;
+                }
+            }
+
+            page++;
+        }
+
+        if (totalRecords == 0)
+            return "0";
+
+        double averageTemperature = totalTemperature / totalRecords;
+        return averageTemperature.ToString("F1");
+    }
+
+    static async Task<string> MakeRequest(string url)
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            HttpResponseMessage response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
+        }
+
+    }
+}
+
+class Solution
+{
+    public static void Main(string[] args)
+    {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        int userId = Convert.ToInt32(Console.ReadLine().Trim());
+
+        string result = Result.getAverageTemperatureForUser(userId);
+
+        textWriter.WriteLine(result);
+        
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}
