@@ -1,0 +1,124 @@
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+
+
+
+class Result
+{
+
+    /*
+     * Complete the 'countMax' function below.
+     *
+     * The function is expected to return a LONG_INTEGER.
+     * The function accepts STRING_ARRAY upRight as parameter.
+     */
+
+    public static long countMax(List<string> upRight)
+    {
+        int maxR = 0;
+        int maxC = 0;
+
+        foreach (string coordinates in upRight)
+        {
+            string[] coords = coordinates.Split(' ');
+            int r = int.Parse(coords[0]);
+            int c = int.Parse(coords[1]);
+
+            maxR = Math.Max(maxR, r);
+            maxC = Math.Max(maxC, c);
+        }
+
+        long[,] grid = new long[maxR + 2, maxC + 2];
+
+        foreach (string coordinates in upRight)
+        {
+            string[] coords = coordinates.Split(' ');
+            int r = int.Parse(coords[0]);
+            int c = int.Parse(coords[1]);
+
+            // Increment the bottom-left corner
+            grid[1, 1] += 1;
+
+            // Decrement the cell below the ending row
+            grid[r + 1, 1] -= 1;
+
+            // Decrement the cell to the right of the ending column
+            grid[1, c + 1] -= 1;
+
+            // Increment the cell diagonally opposite to the ending coordinates
+            grid[r + 1, c + 1] += 1;
+        }
+
+        // Calculate the prefix sum
+        for (int i = 1; i <= maxR + 1; i++)
+        {
+            for (int j = 1; j <= maxC + 1; j++)
+            {
+                grid[i, j] += grid[i - 1, j] + grid[i, j - 1] - grid[i - 1, j - 1];
+            }
+        }
+
+        // Find the maximal value in the grid
+        long maxValue = 0;
+        for (int i = 1; i <= maxR + 1; i++)
+        {
+            for (int j = 1; j <= maxC + 1; j++)
+            {
+                maxValue = Math.Max(maxValue, grid[i, j]);
+            }
+        }
+
+        // Count the occurrences of the maximal element
+        long count = 0;
+        for (int i = 1; i <= maxR + 1; i++)
+        {
+            for (int j = 1; j <= maxC + 1; j++)
+            {
+                if (grid[i, j] == maxValue)
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+
+    }
+
+}
+
+class Solution
+{
+    public static void Main(string[] args)
+    {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        int upRightCount = Convert.ToInt32(Console.ReadLine().Trim());
+
+        List<string> upRight = new List<string>();
+
+        for (int i = 0; i < upRightCount; i++)
+        {
+            string upRightItem = Console.ReadLine();
+            upRight.Add(upRightItem);
+        }
+
+        long result = Result.countMax(upRight);
+
+        textWriter.WriteLine(result);
+
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}
