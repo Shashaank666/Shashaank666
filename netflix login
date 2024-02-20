@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .item {
+            margin-bottom: 10px;
+        }
+
+        .item:nth-child(4n+1) {
+            flex-basis: calc(33.33% - 10px);
+        }
+
+        .item:nth-child(4n+2) {
+            flex-basis: calc(33.33% - 10px);
+        }
+
+        .item:nth-child(4n+3) {
+            flex-basis: calc(33.33% - 10px);
+        }
+
+        .item:nth-child(4n) {
+            flex-basis: 100%;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #E50914;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="item">
+        <div class="highlight">NETREIX</div>
+        Good Bad Mother
+    </div>
+    <div class="item">
+        FLASH
+        <br>
+        365 DAYS
+    </div>
+    <div class="item">
+        THIC
+        <br>
+        ALL OF US
+        <br>
+        DEAD
+        <br>
+        CHATTERJEE
+    </div>
+    <div class="item">
+        NORWAY
+        <br>
+        STAND BY WEBus!
+        <br>
+        WEDNESDAY
+        <br>
+        MONE
+        <br>
+        PEAKY
+        <br>
+        BLINDERS
+    </div>
+    <div class="item">
+        Sign In
+        <br>
+        Black Clober
+    </div>
+    <div class="item">
+        Email or phone number
+        <br>
+        Password
+        <br>
+        Remember me
+    </div>
+    <div class="item">
+        Sign In
+        <br>
+        CIA ...
+        <br>
+        EXTRACTION
+        <br>
+        Need help?
+        <br>
+        New to Netflix? Sign up now
+    </div>
+    <div class="item">
+        This page is protected by Google reCAPTCHA to ensure you're not a bot.
+        <br>
+        Learn more.
+        <br>
+        ing the La
+        <br>
+        N
+        <br>
+        Through My Window
+        <br>
+        Across the Sea
+        <br>
+        EXTRACTION
+        <br>
+        DERD
+        <br>
+        CLAVER
+    </div>
+</div>
+
+</body>
+</html>
